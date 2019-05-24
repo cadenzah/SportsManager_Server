@@ -20,11 +20,12 @@ router.put('/:id', (req, res, next) => {
 
   // body에는 {key: Value} 식으로 데이터가 들어있다.
   // Schema에 따라 payload를 전달한 것이라면 그대로 사용한다
+
   const competId = req.params.id
   Competition.findByIdAndUpdate(competId, req.body, null, (err) => {
     if (err) next(err)
     else res.json({
-      msg: "해당 경기 정보가 성공적으로 갱신되었습니다."
+      msg: "요청이 정상적으로 서버로 전송되었습니다만, 제대로 요청 사항이 반영되었는지 반드시 확인하세요!"
     })
   })
 })
