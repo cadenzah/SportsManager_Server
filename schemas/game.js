@@ -32,17 +32,19 @@ const gameSchema = new Schema({
   },
   court: {
     type: Number,
-    required: true
+    // required: true,
+    default: -1
   },
   number: {
     type: Number,
-    required: true
+    // required: true
+    default: -1
   },
   team_A: teamSchema,
   team_B: teamSchema,
   state: {
-    type: String,
-    lowercase: true
+    type: Number,
+    default: 0
   },
   isLeaf: {
     type: Boolean,

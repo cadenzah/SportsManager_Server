@@ -16,13 +16,15 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
 // Routers separated in routes/ folder
-const gameRouter = require('./routes/game')
-const playerRouter = require('./routes/player')
-const competitionRouter = require('./routes/competition')
+const gameRouter = require('./routes/game.js')
+const playerRouter = require('./routes/player.js')
+const competitionRouter = require('./routes/competition.js')
 
 app.use('/game', gameRouter)
 app.use('/player', playerRouter)
 app.use('/competition', competitionRouter)
+
+// Other than the routings above, will get error message from the service
 
 app.use((req, res, next) => {
   const err = new Error('Not Found');
@@ -32,6 +34,7 @@ app.use((req, res, next) => {
 
 app.use((err, req, res, next) => {
   res.status(err.status || 500);
+  console.log(error)
   res.json({
     msg: "잘못된 경로의 접속입니다."
   })
