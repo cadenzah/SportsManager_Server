@@ -5,25 +5,27 @@ const Game = require('../schemas/game')
 
 const router = express.Router()
 
-router.get('/list/:id', (req, res) => {
+router.get('/list/:id', (req, res, next) => {
   // 해당 id의 "대회" 아래에 열린 경기들 목록 모두 조회
   // json array
   const competId = req.params.id
   Game.find({ competition_id: competId }, (err, games) => {
-    res.json(games)
+    if (err) next(err)
+    else res.json(games)
   })
 })
 
-router.get('/:id', (req, res) => {
+router.get('/:id', (req, res, next) => {
   // 해당 id의 게임에 대한 정보 조회
   // json object
   const gameId = req.params.id
   Game.find({ _id: gameId }, (err, game) => {
-    res.json(game)
+    if (err) next(err)
+    else res.json(game)
   })
 })
 
-router.put('/:id', (req, res) => {
+router.put('/:id', (req, res, next) => {
   // 해당 id의 게임에 대하여 정보 수정
   // body로부터 달라진 내용을 전달받음
   // 반환 없음 -> 있어야 하지 않나?
@@ -33,20 +35,22 @@ router.put('/:id', (req, res) => {
 
   const gameId = req.params.id
   Game.findByIdAndUpdate(gameId, req.body, null, (err) => {
-    res.json({
+    if (err) next(err)
+    else res.json({
       msg: "해당 경기 정보가 성공적으로 갱신되었습니다."
     })
   })
 })
 
-router.post('/:id', (req, res) => {
+router.post('/:id', (req, res, next) => {
   // 해당 id의 "대회"에 대하여 새로운 게임을 생성
   req.body.competition_id = req.params.id
   // 토너먼트 형식에서 위로 올라갈 때마다는 isLeaf를 false로 설정해줘야 함
 
   const newGame = new Game(req.body)
   newGame.save((err) => {
-    res.json(newGame)
+    if (err) next(err)
+    else res.json(newGame)
   })
 })
 

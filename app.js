@@ -34,7 +34,7 @@ app.use((req, res, next) => {
 
 app.use((err, req, res, next) => {
   res.status(err.status || 500);
-  console.log(error)
+  console.log(err)
   res.json({
     msg: "잘못된 경로의 접속입니다."
   })

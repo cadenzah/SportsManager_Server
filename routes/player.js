@@ -5,11 +5,12 @@ const Player = require('../schemas/player')
 const Game = require('../schemas/game')
 const router = express.Router()
 
-router.get('/list/:id', (req, res) => {
+router.get('/list/:id', (req, res, next) => {
   // 해당 id의 대회에 출전중인 선수 명단 반환
   // json array
   const competId = req.params.id
-  Game.find({ _id: competId, isLeaf: true }, { team_A: 1, team_B: 1 }, {}, (err, games) => {
+  Game.find({ competition_id: competId, isLeaf: true }, { team_A: 1, team_B: 1 }, {}, (err, games) => {
+    console.log(games)
     // games는 {team_A와 team_B}로 구성된 객체
     let playerIds = []
 
@@ -28,25 +29,28 @@ router.get('/list/:id', (req, res) => {
     // 2. 여러 id에 대하여 검색?
     // => 반환
     Player.find({ _id: { $in: playerIds } }, (err, players) => {
-      res.json(players)
+      if (err) next(err)
+      else res.json(players)
     })
   })
 })
 
-router.get('/:id', (req, res) => {
+router.get('/:id', (req, res, next) => {
   // 해당 id의 선수에 대한 정보 반환
   // json object
   const playerId = req.params.id
   Player.find({ _id: playerId }, (err, player) => {
-    res.json(player)
+    if (err) next(err)
+    else res.json(player)
   })
 })
 
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
   // 등록된 모든 선수 반환
   // json object array
   Player.find({}, (err, players) => {
-    res.json(players)
+    if (err) next(err)
+    else res.json(players)
   })
 })
 
