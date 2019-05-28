@@ -1,5 +1,6 @@
 const express = require('express')
 const path = require('path')
+const moment = require('moment')
 
 const Competition = require('../schemas/competition')
 const router = express.Router()
@@ -61,11 +62,14 @@ router.post('/', (req, res, next) => {
 
   // password에 대하여 암호화 필요
   // 암호화한 뒤 해당 필드만 변경한 새로운 객체를 전달
+
+  // save date only, not time
+  req.body.date = moment().format('YYYY-MM-DD')
   const newCompet = new Competition(req.body)
   newCompet.save((err) => {
     if (err) next(err)
     else res.json({ _id: newCompet._id })
   })
 })
-
+new Date().get
 module.exports = router

@@ -18,8 +18,8 @@ const competitionSchema = new mongoose.Schema({
     type: String
   },
   date: {
-    type: Date,
-    default: Date.now
+    type: String,
+    required: true
   },
   password: {
     type: String,

@@ -8,10 +8,11 @@ REST API Server for SportsManager_Desktop or any other client program.
 
 ## Tech Stack
 
-- `Node.js`
-- `express.js`
-- `mongoose.js` (`MongoDB`)
-- `brcypt`
+- [`Node.js`](https://nodejs.org/)
+- [`express.js`](https://expressjs.com)
+- [`mongoose.js`](https://mongoosejs.com)
+- [`moment.js`](http://momentjs.com)
+- [`brcypt`](https://github.com/kelektiv/node.bcrypt.js)
 
 ## How to use
 
@@ -78,7 +79,7 @@ URI|Method|Description
     {
       "_id": "the player's ID(`ObjectId`)",
       "name": "the player's name(`String`)",
-      "birth": "the player's birthdate(`Date`)"
+      "birth": "the player's birthdate(`String(YYYY-MM-DD)`)"
     },
     {
       "more": "comes down..."
@@ -106,7 +107,7 @@ URI|Method|Description
     {
       "_id": "the player's ID(`ObjectId`)",
       "name": "the player's name(`String`)",
-      "birth": "the player's birthdate(`Date`)"
+      "birth": "the player's birthdate(`String(YYYY-MM-DD)`)"
     }
     ```
 
@@ -131,7 +132,7 @@ URI|Method|Description
       {
         "_id": "the player's ID(`ObjectId`)",
         "name": "the player's name(`String`)",
-        "birth": "the player's birthdate(`Date`)"
+        "birth": "the player's birthdate(`String(YYYY-MM-DD)`)"
       },
       {
         "more": "comes down..."
@@ -154,7 +155,7 @@ URI|Method|Description
   ```json
   {
     "name": "the player's name(`String`)",
-    "birth": "the player's birthdate(`Date`)"
+    "birth": "the player's birthdate(`String(YYYY-MM-DD)`)"
   }
   ```
 
@@ -165,7 +166,7 @@ URI|Method|Description
       {
         "_id": "the player's ID(`ObjectId`)",
         "name": "the player's name(`String`)",
-        "birth": "the player's birthdate(`Date`)"
+        "birth": "the player's birthdate(`String(YYYY-MM-DD)`)"
       },
       {
         "more": "comes down..."
@@ -369,6 +370,7 @@ URI|Method|Description
         "_id": "competition's id(`ObjectId`)",
         "name": "competition's title or name",
         "location": "where the competition is held",
+        "date": "when the competition is held",
         "password": "the password for this competition"
       },
 
@@ -405,6 +407,7 @@ URI|Method|Description
       "_id": "competition's id(`ObjectId`)",
       "name": "competition's title or name",
       "location": "where the competition is held",
+      "date": "when the competition is held",
       "password": "the password for this competition"
     }
     ```
@@ -430,6 +433,7 @@ URI|Method|Description
       "_id": "competition's id(`ObjectId`)",
       "name": "competition's title or name",
       "location": "where the competition is held",
+      "date": "when the competition is held",
       "password": "the password for this competition"
     }
     ```
@@ -485,6 +489,7 @@ URI|Method|Description
       "_id": "competition's id(`ObjectId`)",
       "name": "competition's title or name",
       "location": "where the competition is held",
+      "date": "when the competition is held",
       "password": "the password for this competition"
     },
 

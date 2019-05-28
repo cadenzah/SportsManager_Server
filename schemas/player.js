@@ -13,7 +13,7 @@ const playerSchema = new mongoose.Schema({
     required: true
   },
   birth: {
-    type: Date
+    type: String
   }
 })
 
