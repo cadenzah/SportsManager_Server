@@ -370,7 +370,7 @@ URI|Method|Description
         "_id": "competition's id(`ObjectId`)",
         "name": "competition's title or name",
         "location": "where the competition is held",
-        "date": "when the competition is held",
+        "date": "when the competition is held(`String(YYYY-MM-DD)`)",
         "password": "the password for this competition"
       },
 
@@ -407,7 +407,7 @@ URI|Method|Description
       "_id": "competition's id(`ObjectId`)",
       "name": "competition's title or name",
       "location": "where the competition is held",
-      "date": "when the competition is held",
+      "date": "when the competition is held(`String(YYYY-MM-DD)`)",
       "password": "the password for this competition"
     }
     ```
@@ -433,7 +433,7 @@ URI|Method|Description
       "_id": "competition's id(`ObjectId`)",
       "name": "competition's title or name",
       "location": "where the competition is held",
-      "date": "when the competition is held",
+      "date": "when the competition is held(`String(YYYY-MM-DD)`)",
       "password": "the password for this competition"
     }
     ```
@@ -489,7 +489,7 @@ URI|Method|Description
       "_id": "competition's id(`ObjectId`)",
       "name": "competition's title or name",
       "location": "where the competition is held",
-      "date": "when the competition is held",
+      "date": "when the competition is held(`String(YYYY-MM-DD)`)",
       "password": "the password for this competition"
     },
 
