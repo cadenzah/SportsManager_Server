@@ -54,9 +54,9 @@ $ npm run start
 - [`GET /game/list/:competId`](#get/game/list/:competId)
 - [`GET /competition`](#get/competition)
 - [`POST /competition`](#post/competition)
-- [`GET /competition/:id`](get/competition/:id)
-- [`PUT /competition/:id`](put/competition/:id)
-- [`GET /competition/:page/:count`](get/competition/:page/:count)
+- [`GET /competition/:id`](#get/competition/:id)
+- [`PUT /competition/:id`](#put/competition/:id)
+- [`GET /competition/:page/:count`](#get/competition/:page/:count)
 
 <a name="get/player"></a>
 ### - Get all players' data
