@@ -9,6 +9,7 @@ const connect = require('./schemas')
 
 const app = express()
 connect(dbPort)
+const mqtt = require('./mqtt')
 
 app.use(logger('dev'))
 app.use(express.static(path.join(__dirname, 'public')))
