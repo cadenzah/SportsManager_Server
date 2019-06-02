@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/cadenzah/SportsManager_Server#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "dotenv": "^8.0.0",
     "express": "^4.17.0",
     "moment": "^2.24.0",

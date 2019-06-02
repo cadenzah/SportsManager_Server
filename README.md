@@ -44,20 +44,21 @@ $ npm run start
 
 ### Index
 
-- `GET /player`
-- `GET /player/:id`
-- `GET /player/:id:competId`
-- `POST /player`
-- `GET /game/:id`
-- `PUT /game/:id`
-- `POST /game/:competId`
-- `GET /game/list/:competId`
-- `GET /competition`
-- `POST /competition`
-- `GET /competition/:id`
-- `PUT /competition/:id`
-- `GET /competition/:page/:count`
+- [`GET /player`](#get/player)
+- [`GET /player/:id`](#get/player/:id)
+- [`GET /player/:id/:competId`](#get/player/:id/:competId)
+- [`POST /player`](#post/player)
+- [`GET /game/:id`](#get/game/:id)
+- [`PUT /game/:id`](#put/game/:id)
+- [`POST /game/:competId`](#post/game/:competId)
+- [`GET /game/list/:competId`](#get/game/list/:competId)
+- [`GET /competition`](#get/competition)
+- [`POST /competition`](#post/competition)
+- [`GET /competition/:id`](get/competition/:id)
+- [`PUT /competition/:id`](put/competition/:id)
+- [`GET /competition/:page/:count`](get/competition/:page/:count)
 
+<a name="get/player"></a>
 ### - Get all players' data
 
 URI|Method|Description
@@ -87,6 +88,7 @@ URI|Method|Description
   ]
   ```
 
+<a name="get/player/:id"></a>
 ### - Get a player's data
 
 URI|Method|Description
@@ -111,6 +113,7 @@ URI|Method|Description
     }
     ```
 
+<a name="get/player/:id/:competId"></a>
 ### - Get players' data for the competition
 
 URI|Method|Description
@@ -140,6 +143,7 @@ URI|Method|Description
     ]
     ```
 
+<a name="post/player"></a>
 ### - Register new player
 
 URI|Method|Description
@@ -174,6 +178,7 @@ URI|Method|Description
     ]
     ```
 
+<a name="get/game/:id"></a>
 ### - Get a game's data
 
 URI|Method|Description
@@ -216,6 +221,7 @@ URI|Method|Description
     }
     ```
 
+<a name="put/game/:id"></a>
 ### - Modify a game's data
 
 URI|Method|Description
@@ -244,6 +250,7 @@ URI|Method|Description
     }
     ```
 
+<a name="post/game/:competId"></a>
 ### - Make a new game
 
 URI|Method|Description
@@ -301,6 +308,7 @@ URI|Method|Description
     }
     ```
 
+<a name="get/game/list/:competId"></a>
 ### - Get a list of games for a competition
 
 URI|Method|Description
@@ -348,6 +356,7 @@ URI|Method|Description
     ]
     ```
 
+<a name="get/competition"></a>
 ### - Get the list of data of competitions
 
 URI|Method|Description
@@ -380,6 +389,7 @@ URI|Method|Description
     ]
     ```
 
+<a name="post/competition"></a>
 ### - Make a new competition
 
 URI|Method|Description
@@ -412,6 +422,7 @@ URI|Method|Description
     }
     ```
 
+<a name="get/competition/:id"></a>
 ### - Get the data of a competition
 
 URI|Method|Description
@@ -438,6 +449,7 @@ URI|Method|Description
     }
     ```
 
+<a name="put/competition/:id"></a>
 ### - Modify the data of a competition
 
 URI|Method|Description
@@ -466,6 +478,7 @@ URI|Method|Description
     }
     ```
 
+<a name="get/competition/:page/:count"></a>
 ### - Get a limited list of data of competitions
 
 URI|Method|Description
