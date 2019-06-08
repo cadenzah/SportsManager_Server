@@ -3,13 +3,14 @@ const path = require('path')
 const logger = require('morgan')
 require('dotenv').config()
 
-const port = process.env.PORT
-const dbPort = process.env.DB_PORT
+const port = process.env.PORT || 8080
+const dbPort = process.env.DB_PORT || 27017
 const connect = require('./schemas')
 
 const app = express()
 connect(dbPort)
 const mqtt = require('./mqtt')
+mqtt(app)
 
 app.use(logger('dev'))
 app.use(express.static(path.join(__dirname, 'public')))
