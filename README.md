@@ -71,7 +71,7 @@ $ npm run start
 
 1. After the device created initial connection to the MQTT broker, publish `/event/<gameId>` with message having `eventCode: 0`. The message should be serialized.
 
-> ```js
+```js
 // sample code which is written in javascript
 client.publish('/event/5674aadb87b6d8e89dbw7984e34aw435bd', JSON.stringify({
   eventCode: 0
@@ -80,7 +80,7 @@ client.publish('/event/5674aadb87b6d8e89dbw7984e34aw435bd', JSON.stringify({
 
 2. The server will subscribe to the device's MQTT message, and will response to the device by publishing `/update/<gameId>` with message having `eventCode`, and `msg`. The device should subscribe to the topic `/update` to get this message from the server. Also, the message is in `Buffer` type, so it has to be deserialized to use the value inside.
 
-> ```js
+```js
 // sample response message which is written in json
 {
   "msg": "device_ready",
@@ -90,7 +90,7 @@ client.publish('/event/5674aadb87b6d8e89dbw7984e34aw435bd', JSON.stringify({
 
 If the publish didn't work well, in most case due to invalid `gameId`, the server will respond with error msg:
 
->```js
+```js
 // error message included with eveneCode -1
 {
   "msg": 'update failed',
