@@ -78,7 +78,7 @@ client.publish('/event/5674aadb87b6d8e89dbw7984e34aw435bd', JSON.stringify({
 }))
 ```
 
-2. The server will subscribe to the device's MQTT message, and will response to the device by publishing `/update/<gameId>` with message having `eventCode`, and `msg`. The device should subscribe to the topic `/update` to get this message from the server. Also, the message is in `Buffer` format, so it has to be deserialized to use the value inside.
+2. The server will subscribe to the device's MQTT message, and will response to the device by publishing `/update/<gameId>` with message having `eventCode`, and `msg`. The device should subscribe to the topic `/update` to get this message from the server. Also, the message is in `Buffer` type, so it has to be deserialized to use the value inside.
 
 > ```js
 // sample response message which is written in json
@@ -88,28 +88,56 @@ client.publish('/event/5674aadb87b6d8e89dbw7984e34aw435bd', JSON.stringify({
 }
 ```
 
+If the publish didn't work well, in most case due to invalid `gameId`, the server will respond with error msg:
+
+>```js
+// error message included with eveneCode -1
+{
+  "msg": 'update failed',
+  eventCode: -1
+}
+```
+
 ### Message Protocol
 
 MQTT Device and the REST Server exchanges a message with `eventCode`, which indicates what event occurred in the game assigned to the device. There are 2 topics used:
 
 - `/event`: MQTT Device publishes this topic to inform the server that specific event occurred
+  - Mainly used topic by `device`
+  - Topic usage:
+    `/event/<gameId>`
+  - Message format:
+
+    ```json
+      {
+        "eventCode": "<Event code ranged from 0 to 7 (See the table below)"
+      }
+    ```
+
 - `/update`: REST Server publishes this topic to inform the device that the event sent by the device was handled or not
+  - Mainly used topic by `server`
+  - Topic usage:
+    `/update/<gameId>`
+  - Message format:
 
-Event code | Description (If you click, goes to detailed usage)
--|-
-0| [Device is connected to the service](#event0)
-1| [Game started](#event1)
-2| [Game ended](#event2)
-3| [Team A scored](#event3)
-4| [Team B scored](#event4)
-5| [Team A deducted](#event5)
-6| [Team B deducted](#event6)
-7| [Other cases i.e. player wound, no shuttlecock, player not shown...](#event7)
+    ```json
+      {
+        "eventCode": "<Event code ranged from 0 to 7; if -1, the event device sent did not handled well",
+        "msg": "<Message returned from the server which explains the result shortly"
+      }
+    ```
 
-<a name="event0"></a>
-#### Event code 0
-
-- example topic usage
+Event code | `msg` string | Description (If you click, goes to detailed usage)
+-|-|-
+0|`device_ready`| Device is connected to the service
+1|`in_progress`| Game started
+2|`game_over`| Game ended
+3|`team_A_scored_<Team A's score>:<Team B's score>`| Team A scored
+4|`team_B_scored_<Team A's score>:<Team B's score>`| Team B scored
+5|`team_A_deducted_<Team A's score>:<Team B's score>`| Team A deducted
+6|`team_B_deducted_<Team A's score>:<Team B's score>`| Team B deducted
+7|`problem_occurred`| Other cases i.e. player wound, no shuttlecock, player not shown...
+-1|`update_failed`| Event from the device did not handled well in the server
 
 <a name="api-rules"></a>
 ## API Rules

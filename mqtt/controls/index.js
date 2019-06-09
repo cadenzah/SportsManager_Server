@@ -7,7 +7,7 @@ const controller = (client, gameId, eventCode) => {
         if (err) { // 업데이트에 실패하였음을 publish
           console.log('fail')
           client.publish(`update/${gameId}`, JSON.stringify({
-            msg: 'update failed',
+            msg: 'update_failed',
             eventCode: -1
           }))
         } else { // 정상 변경되었음을 publish
@@ -25,7 +25,7 @@ const controller = (client, gameId, eventCode) => {
         if (err) { // 업데이트에 실패하였음을 publish
           console.log('fail')
           client.publish(`update/${gameId}`, JSON.stringify({
-            msg: 'update failed',
+            msg: 'update_failed',
             eventCode: -1
           }))
         } else { // 정상 변경되었음을 publish
@@ -43,7 +43,7 @@ const controller = (client, gameId, eventCode) => {
         if (err) { // 업데이트에 실패하였음을 publish
           console.log('fail')
           client.publish(`update/${gameId}`, JSON.stringify({
-            msg: 'update failed',
+            msg: 'update_failed',
             eventCode: -1
           }))
         } else { // 정상 변경되었음을 publish
@@ -64,13 +64,13 @@ const controller = (client, gameId, eventCode) => {
         if (err) { // 업데이트에 실패하였음을 publish
           console.log('fail')
           client.publish(`update/${gameId}`, JSON.stringify({
-            msg: 'update failed',
+            msg: 'update_failed',
             eventCode: -1
           }))
         } else { // 정상 변경되었음을 publish
           console.log('success')
           client.publish(`/update/${gameId}`, JSON.stringify({
-            msg: `team A scored - ${game.team_A.score}:${game.team_B.score}`,
+            msg: `team_A_scored_${game.team_A.score}:${game.team_B.score}`,
             eventCode: 3
           }))
         }
@@ -85,13 +85,13 @@ const controller = (client, gameId, eventCode) => {
         if (err) { // 업데이트에 실패하였음을 publish
           console.log('fail')
           client.publish(`update/${gameId}`, JSON.stringify({
-            msg: 'update failed',
+            msg: 'update_failed',
             eventCode: -1
           }))
         } else { // 정상 변경되었음을 publish
           console.log('success')
           client.publish(`/update/${gameId}`, JSON.stringify({
-            msg: `team B scored - ${game.team_A.score}:${game.team_B.score}`,
+            msg: `team_B_scored_${game.team_A.score}:${game.team_B.score}`,
             eventCode: 4
           }))
         }
@@ -106,13 +106,13 @@ const controller = (client, gameId, eventCode) => {
         if (err) { // 업데이트에 실패하였음을 publish
           console.log('fail')
           client.publish(`update/${gameId}`, JSON.stringify({
-            msg: 'update failed',
+            msg: 'update_failed',
             eventCode: -1
           }))
         } else { // 정상 변경되었음을 publish
           console.log('success')
           client.publish(`/update/${gameId}`, JSON.stringify({
-            msg: `team A deducted - ${game.team_A.score}:${game.team_B.score}`,
+            msg: `team_A_deducted_${game.team_A.score}:${game.team_B.score}`,
             eventCode: 5
           }))
         }
@@ -127,13 +127,13 @@ const controller = (client, gameId, eventCode) => {
         if (err) { // 업데이트에 실패하였음을 publish
           console.log('fail')
           client.publish(`update/${gameId}`, JSON.stringify({
-            msg: 'update failed',
+            msg: 'update_failed',
             eventCode: -1
           }))
         } else { // 정상 변경되었음을 publish
           console.log('success')
           client.publish(`/update/${gameId}`, JSON.stringify({
-            msg: `team B deducted - ${game.team_A.score}:${game.team_B.score}`,
+            msg: `team_B_deducted_${game.team_A.score}:${game.team_B.score}`,
             eventCode: 6
           }))
         }
@@ -145,13 +145,13 @@ const controller = (client, gameId, eventCode) => {
         if (err) { // 업데이트에 실패하였음을 publish
           console.log('fail')
           client.publish(`update/${gameId}`, JSON.stringify({
-            msg: 'update failed',
+            msg: 'update_failed',
             eventCode: -1
           }))
         } else { // 정상 변경되었음을 publish
           console.log('success')
           client.publish(`/update/${gameId}`, JSON.stringify({
-            msg: 'problem occured',
+            msg: 'problem_occured',
             eventCode: 7
           }))
         }
@@ -160,7 +160,7 @@ const controller = (client, gameId, eventCode) => {
 
     default: // event code is out of range; return error message
       client.publish(`/update/${gameId}`, JSON.stringify({
-        msg: 'update failed - wrong event code (1 ~ 7)',
+        msg: 'update_failed_wrong_event_code_(1~7)',
         eventCode: eventCode
       }))
       break
