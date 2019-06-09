@@ -1,11 +1,15 @@
 const mqtt = (app) => {
   const mqtt = require('mqtt')
   const mqttParse = require('mqtt-pattern')
-  const client = mqtt.connect(`mqtt://${process.env.BROKER_IP}:${process.env.BROKER_PORT}`)
+
+  const brokerIP = process.env.BROKER_IP || 'localhost'
+  const brokerPort = process.env.BROKER_PORT || 1883
+
+  const client = mqtt.connect(`mqtt://${brokerIP}:${brokerPort}`)
   const controller = require('./controls')
 
   client.on('connect', (connack) => {
-    console.log(`MQTT Broker와 연결 성공`)
+    console.log(`${brokerPort}번 포트에서 MQTT Broker와 연결 성공`)
 
     // test codes to simulate event from device
     client.subscribe('/event/#', (err) => {

@@ -2,9 +2,13 @@
 
 ## Introduction
 
-REST API Server for SportsManager_Desktop or any other client program.
+REST API Server for SportsManager_Desktop or any other client program. Available to subscribe to `MQTT` clients which publish real-time game progress data to the server.
 
 ## Features
+
+- Store data of competitions, games, and players
+- REST API for CRUD of each data (See [API Rules](#api-rules) section)
+- Update in real-time with MQTT Devices connected (See [Connect with a MQTT Device](#mqtt-rules) section)
 
 ## Tech Stack
 
@@ -13,8 +17,25 @@ REST API Server for SportsManager_Desktop or any other client program.
 - [`mongoose.js`](https://mongoosejs.com)
 - [`moment.js`](http://momentjs.com)
 - [`brcypt`](https://github.com/kelektiv/node.bcrypt.js)
+- [`mqtt.js`](https://github.com/mqttjs/MQTT.js)
+- [`mqtt-pattern.js`](https://github.com/RangerMauve/mqtt-pattern)
 
-## How to use
+## Index
+
+- [Prerequisite](#prerequisite)
+- [How to use in local](#howto-local)
+- [Connect with a MQTT Device](#mqtt-rules)
+- [API Rules](#api-rules)
+
+<a name="prerequisite"></a>
+## Prerequisite
+
+- MongoDB Server Instance (For data store)
+- MQTT Broker Instance (For MQTT communication)
+> MQTT Broker instance is not included in this project. You should run a MQTT broker by yourself, or see [SportsManager_Broker repository](https://github.com/cadenzah/SportsManager_Broker) to set simple and easy MQTT broker instance.
+
+<a name="howto-local"></a>
+## How to use in local
 
 1. Run `mongod`
 ```bash
@@ -31,15 +52,66 @@ $ cd SportsManager_Server
 $ npm install
 ```
 5. Make `.env` file. This file includes environment values used in the server. Those values include:
-> - PORT: The port number for the web server
-> - DB_NAME: The MongoDB database name
-> - DB_IP: IP address where MongoDB is running
-> - DB_PORT: The port number for the DB
+> - PORT: The port number for the web server (default value is `8080`)
+> - DB_NAME: The MongoDB database name (default value is `sports-manager`)
+> - DB_IP: IP address where MongoDB is running (default value is `localhost`)
+> - DB_PORT: The port number for the DB (default value is `27017`)
+> - BROKER_IP: The IP address where MQTT broker instance is running (default value is `localhost`)
+> - BROKER_PORT: The port number for the MQTT broker instance (default value is `1883`)
+
 6. Run the web server
 ```bash
 $ npm run start
 ```
 
+<a name="mqtt-rules"></a>
+## Connect with a MQTT Device
+
+### Simple Usage Tutorial
+
+1. After the device created initial connection to the MQTT broker, publish `/event/<gameId>` with message having `eventCode: 0`. The message should be serialized.
+
+> ```js
+// sample code which is written in javascript
+client.publish('/event/5674aadb87b6d8e89dbw7984e34aw435bd', JSON.stringify({
+  eventCode: 0
+}))
+```
+
+2. The server will subscribe to the device's MQTT message, and will response to the device by publishing `/update/<gameId>` with message having `eventCode`, and `msg`. The device should subscribe to the topic `/update` to get this message from the server. Also, the message is in `Buffer` format, so it has to be deserialized to use the value inside.
+
+> ```js
+// sample response message which is written in json
+{
+  "msg": "device_ready",
+  "eventCode": 0
+}
+```
+
+### Message Protocol
+
+MQTT Device and the REST Server exchanges a message with `eventCode`, which indicates what event occurred in the game assigned to the device. There are 2 topics used:
+
+- `/event`: MQTT Device publishes this topic to inform the server that specific event occurred
+- `/update`: REST Server publishes this topic to inform the device that the event sent by the device was handled or not
+
+Event code | Description (If you click, goes to detailed usage)
+-|-
+0| [Device is connected to the service](#event0)
+1| [Game started](#event1)
+2| [Game ended](#event2)
+3| [Team A scored](#event3)
+4| [Team B scored](#event4)
+5| [Team A deducted](#event5)
+6| [Team B deducted](#event6)
+7| [Other cases i.e. player wound, no shuttlecock, player not shown...](#event7)
+
+<a name="event0"></a>
+#### Event code 0
+
+- example topic usage
+
+<a name="api-rules"></a>
 ## API Rules
 
 ### Index

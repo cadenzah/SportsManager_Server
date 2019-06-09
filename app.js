@@ -4,11 +4,13 @@ const logger = require('morgan')
 require('dotenv').config()
 
 const port = process.env.PORT || 8080
+const dbIP = process.env.DB_IP || 'localhost'
 const dbPort = process.env.DB_PORT || 27017
+const dbName = process.env.DB_NAME || 'sports-manager'
 const connect = require('./schemas')
 
 const app = express()
-connect(dbPort)
+connect(dbIP, dbPort, dbName)
 const mqtt = require('./mqtt')
 mqtt(app)
 

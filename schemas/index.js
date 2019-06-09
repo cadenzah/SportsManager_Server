@@ -7,12 +7,10 @@
 
 const mongoose = require('mongoose')
 
-module.exports = (dbPort) => {
+module.exports = (dbIP, dbPort, dbName) => {
   const connect = () => {
     mongoose.set('debug', true)
-    mongoose.connect(`mongodb://root@localhost:${dbPort}`, {
-      dbName: 'sports-manager'
-    }, (error) => {
+    mongoose.connect(`mongodb://root@${dbIP}:${dbPort}`, { dbName }, (error) => {
       if (error) {
         console.log('MongoDB 연결 에러', error)
       } else {
