@@ -43,15 +43,28 @@ router.put('/:id', (req, res, next) => {
 })
 
 router.post('/:id', (req, res, next) => {
+  // 생성하려는 게임의 대회id
+  let competitionId = req.params.id;
   // 해당 id의 "대회"에 대하여 새로운 게임을 생성
-  req.body.competition_id = req.params.id
+  req.body.competition_id = competitionId;
   // 토너먼트 형식에서 위로 올라갈 때마다는 isLeaf를 false로 설정해줘야 함
 
-  const newGame = new Game(req.body)
-  newGame.save((err) => {
-    if (err) next(err)
-    else res.json(newGame)
-  })
-})
+  Game.find({ competition_id: competitionId }, (err, games) => {
+    if(err) next(err);
+
+    let court = 0;
+    games.forEach((game) => {
+      if(game.court > court) court = game.court;
+    });
+    court++;
+    req.body.court = court;
+
+    const newGame = new Game(req.body);
+    newGame.save((err) => {
+      if (err) next(err);
+      else res.json(newGame)
+    })
+  });
+});
 
 module.exports = router
