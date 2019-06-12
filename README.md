@@ -112,7 +112,7 @@ Usage|Method Topic|Resource Topic|Description
 
 Usage|Method Topic|Resource Topic|Description
 -|-|-|-
-`Publish`|`/event`|`/<deviceId>`|Emit aa event occurred in a game for which the device is working
+`Publish`|`/event`|`/<deviceId>`|Emit an event occurred in a game for which the device is working
 
 - Message Form: (`JSON`)
 
@@ -152,7 +152,7 @@ Usage|Method Topic|Resource Topic|Description
   ```json
   {
     "msg": "short message about the result from the server",
-    "eventCode": <event code's number 1~7>
+    "eventCode": "event code's number 1~7"
   }
   ```
 
