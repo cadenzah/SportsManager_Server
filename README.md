@@ -334,11 +334,14 @@ URI|Method|Description
 
   - Request Body :
 
-  You can include only fields that need to be modified, not all of them. But be careful not to include fields that are not in the DB Schema. There will be nothing happened, nor will it not give you any error(will be fixed later).
+    - You can include only fields that need to be modified, not all of them. But be careful not to include fields that are not in the DB Schema. There will be nothing happened, nor will it not give you any error(will be fixed later).
+    - If you want to modify the fields of each teams(i.e. team A's score), specify the field you want to modify with nested object.
+
 
   ```json
   {
       "name_of_key_to_fix": "new_value",
+      "team_A": { "score": 5 }
   }
   ```
 
@@ -356,6 +359,8 @@ URI|Method|Description
 URI|Method|Description
 -|-|-
 `/game/:competId`|`POST`|Generate new game for the specified competition
+
+  - If the generated game is the initial game of the competition, the court number of it is 1. If the generated game is not the initial game, then the court number of it is 1 bigger than the latest generated game's court number.
 
   - Request Parameter :
 
