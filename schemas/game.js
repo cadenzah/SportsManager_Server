@@ -33,12 +33,12 @@ const gameSchema = new Schema({
   court: {
     type: Number,
     // required: true,
-    default: -1
+    default: 1
   },
   number: {
     type: Number,
     // required: true
-    default: -1
+    default: 1
   },
   team_A: teamSchema,
   team_B: teamSchema,
