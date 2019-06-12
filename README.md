@@ -25,6 +25,7 @@ REST API Server for SportsManager_Desktop or any other client program. Available
 - [Prerequisite](#prerequisite)
 - [How to use in local](#howto-local)
 - [Connect with a MQTT Device](#mqtt-rules)
+- [MQTT Topics and Event codes Rules](#topic-rules)
 - [API Rules](#api-rules)
 
 <a name="prerequisite"></a>
@@ -69,65 +70,64 @@ $ npm run start
 
 ### Simple Usage Tutorial
 
-1. After the device created initial connection to the MQTT broker, publish `/event/<gameId>` with message having `eventCode: 0`. The message should be serialized.
+1. Publish by `/connect` topic to the server with the device's ID included. The server will subscribe to the afterward messages based on the device ID you just sent.
 
-```js
-// sample code which is written in javascript
-client.publish('/event/5674aadb87b6d8e89dbw7984e34aw435bd', JSON.stringify({
-  eventCode: 0
-}))
-```
+2. Publish by `/event/<deviceId>` with `gameId`, `eventCode`, `content` included.
 
-2. The server will subscribe to the device's MQTT message, and will response to the device by publishing `/update/<gameId>` with message having `eventCode`, and `msg`. The device should subscribe to the topic `/update` to get this message from the server. Also, the message is in `Buffer` type, so it has to be deserialized to use the value inside.
+3. Subscribe to `/update/<deviceId>` and utilize responses from the server
 
-```js
-// sample response message which is written in json
+### NOTES
+
+- **The messages have to be serialized during transaction.** When you receive a message, **use it after deserializing it.** This is due to that a message is stored in the broker as `Buffer` type data.
+
+- To learn how to configure the message, See the table in [MQTT Topics and Event Codes Rule](#topic-rules) section below.
+
+<a name="topic-rules"></a>
+## MQTT Topics and Event Codes Rule
+
+### Index
+
+- [`/connect`](#connect)
+- [`/event/<deviceId>`](#event)
+- [Event Codes Rule](#event-rules)
+- [`/update/<deviceId>`](#update)
+
+<a name="connect"></a>
+### Generating Initial Connection
+
+Usage|Method Topic|Resource Topic|Description
+-|-|-|-
+`Publish`|`/connect`| *none* |Initialize a connection between the device and the server
+
+- Message Form: (`JSON`)
+
+```json
 {
-  "msg": "device_ready",
-  "eventCode": 0
+  "content": "device ID who tries to use this service"
 }
 ```
 
-If the publish didn't work well, in most case due to invalid `gameId`, the server will respond with error msg:
+<a name="event"></a>
+### Emitting an event from a game
 
-```js
-// error message included with eveneCode -1
+Usage|Method Topic|Resource Topic|Description
+-|-|-|-
+`Publish`|`/event`|`/<deviceId>`|Emit aa event occurred in a game for which the device is working
+
+- Message Form: (`JSON`)
+
+```json
 {
-  "msg": 'update failed',
-  eventCode: -1
+  "gameId": "game ID about which the device is trying to emit an event",
+  "eventCode": "pre-defined event code (See the table below)",
+  "content": "additional information about the event (Mostly used for event code 7)"
 }
 ```
 
-### Message Protocol
+<a name="event-rules"></a>
+### Event Codes Rule
 
-MQTT Device and the REST Server exchanges a message with `eventCode`, which indicates what event occurred in the game assigned to the device. There are 2 topics used:
-
-- `/event`: MQTT Device publishes this topic to inform the server that specific event occurred
-  - Mainly used topic by `device`
-  - Topic usage:
-    `/event/<gameId>`
-  - Message format:
-
-    ```json
-      {
-        "eventCode": "<Event code ranged from 0 to 7 (See the table below)"
-      }
-    ```
-
-- `/update`: REST Server publishes this topic to inform the device that the event sent by the device was handled or not
-  - Mainly used topic by `server`
-  - Topic usage:
-    `/update/<gameId>`
-  - Message format:
-
-    ```json
-      {
-        "eventCode": "<Event code ranged from 0 to 7; if -1, the event device sent did not handled well",
-        "msg": "<Message returned from the server which explains the result shortly"
-      }
-    ```
-
-Event code | `msg` string | Description (If you click, goes to detailed usage)
+Event code | `msg` string | Description
 -|-|-
 0|`device_ready`| Device is connected to the service
 1|`in_progress`| Game started
@@ -138,6 +138,23 @@ Event code | `msg` string | Description (If you click, goes to detailed usage)
 6|`team_B_deducted_<Team A's score>:<Team B's score>`| Team B deducted
 7|`problem_occurred`| Other cases i.e. player wound, no shuttlecock, player not shown...
 -1|`update_failed`| Event from the device did not handled well in the server
+
+<a name="update"></a>
+### Receive a response from the server
+
+Usage|Method Topic|Resource Topic|Description
+-|-|-|-
+`Subscribe`|`/update`|`/<deviceId>`|Receive a response from the server, whether the event sent was well processed or not.
+
+- Message Form: (`JSON`)
+
+  - If your `/event` topic message was successfully processed, you will get a success message.
+  ```json
+  {
+    "msg": "short message about the result from the server",
+    "eventCode": <event code's number 1~7>
+  }
+  ```
 
 <a name="api-rules"></a>
 ## API Rules

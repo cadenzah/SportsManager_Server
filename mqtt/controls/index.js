@@ -1,4 +1,4 @@
-// signature: (client: MQTT_instance, gameId: String, event: Number)
+// signature: (client: MQTT_instance, deviceId: String, gameId: String, event: Number, content: String)
 const Game = require('../../schemas/game')
 const controller = (client, deviceId, gameId, eventCode, content) => {
   switch (eventCode) {
