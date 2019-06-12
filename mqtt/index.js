@@ -11,26 +11,44 @@ const mqtt = (app) => {
   client.on('connect', (connack) => {
     console.log(`${brokerPort}번 포트에서 MQTT Broker와 연결 성공`)
 
-    // test codes to simulate event from device
-    client.subscribe('/event/#', (err) => {
-      client.publish('/event/5ce78a7de73c2f3660a992e8', JSON.stringify({
-        eventCode: 13
+    // subscribe to any mqtt messsage with topic '/connect'
+    client.subscribe('/connect/#', (err) => {
+      // dummy '/connect' publish code for test purpose
+      client.publish('/connect', JSON.stringify({
+        // deviceId (generated from the device)
+        content: '12343'
       }))
     })
-
-    // test codes to subscribe the update made by server
-    client.subscribe('/update/#')
   })
 
   client.on('message', (topic, message) => {
-    const topicPattern = '/event/+gameId/#'
-    const topics = mqttParse.exec(topicPattern, topic)
+    const connectTopics = mqttParse.exec('/+method', topic)
+    const otherTopics = mqttParse.exec('/+method/+deviceId', topic)
 
-    if (!!topics && Object.keys(topics).includes('gameId')) {
-      const { eventCode } = JSON.parse(message.toString())
-      if (eventCode !== undefined) controller(client, topics.gameId, eventCode)
-    } else {
+    if (!otherTopics) {
+      // connect topic
+      const deviceId = JSON.parse(message.toString()).content
+      client.subscribe(`/event/${deviceId}`)
+
+      // dummy '/event' publish code for test purpose
+      client.publish(`/event/${deviceId}`, JSON.stringify({
+        gameId: '5ce78ccf6917da36bad81aa7',
+        eventCode: 2
+      }))
+    } else if (otherTopics.method === 'event'){
+      // event topic
+      const { gameId, eventCode, content } = JSON.parse(message.toString())
+      if (eventCode !== undefined) controller(client, otherTopics.deviceId, gameId, eventCode, content)
+
+      // dummy '/update' subscribe code for test purpose
+      client.subscribe(`/update/${otherTopics.deviceId}`)
+    }
+    // dummy '/update' processing condition branch
+    else if (otherTopics.method === 'update') {
       console.log(JSON.parse(message.toString()))
+    }
+    else {
+      console.log('nothing happened...')
     }
   })
   // save the reference of this mqtt client

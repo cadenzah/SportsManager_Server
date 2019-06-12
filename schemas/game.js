@@ -43,8 +43,8 @@ const gameSchema = new Schema({
   team_A: teamSchema,
   team_B: teamSchema,
   state: {
-    type: Number,
-    default: 0
+    type: String,
+    default: 'not_initialized'
   },
   isLeaf: {
     type: Boolean,
