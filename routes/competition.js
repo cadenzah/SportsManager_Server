@@ -56,10 +56,13 @@ router.get('/:page/:count', (req, res, next) => {
   // 전체 대회 목록을 일부만 반환
   // page는 몇번째 페이지
   // count는 페이지 내의 데이터 개수
-  const page = req.params.page
-  const count = req.params.count
-  Competition.find({}, { password: 0 }, { sort: { "date": -1 }, skip: page * count, limit: count}, (err, competitions) => {
-    if (err) next(err)
+  const page = parseInt(req.params.page)
+  const count = parseInt(req.params.count)
+  Competition.find({}, { password: 0 }, { sort: { "date": -1 }, skip: (page-1) * count, limit: count}, (err, competitions) => {
+    if (err) {
+      console.log(err)
+      next(err)
+    }
     else res.json(competitions)
   } )
 })
