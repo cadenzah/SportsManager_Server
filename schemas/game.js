@@ -40,8 +40,14 @@ const gameSchema = new Schema({
     // required: true
     default: 1
   },
-  team_A: teamSchema,
-  team_B: teamSchema,
+  team_A: {
+    type: teamSchema,
+    default: () => ({})
+  },
+  team_B: {
+    type: teamSchema,
+    default: () => ({})
+  },
   state: {
     type: Number,
     default: 0
