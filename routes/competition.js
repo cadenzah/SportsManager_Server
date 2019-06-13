@@ -30,7 +30,7 @@ router.get('/:id', (req, res, next) => {
   // 특정 대회에 대한 정보 열람
   // json object
   const competId = req.params.id
-  Competition.find({ _id: competId }, (err, competition) => {
+  Competition.find({ _id: competId }, { password: 0 }, {}, (err, competition) => {
     if (err) next(err)
     else res.json(competition)
   })
@@ -58,7 +58,7 @@ router.get('/:page/:count', (req, res, next) => {
   // count는 페이지 내의 데이터 개수
   const page = req.params.page
   const count = req.params.count
-  Competition.find({}, null, { sort: { "date": -1 }, skip: page * count, limit: count}, (err, competitions) => {
+  Competition.find({}, { password: 0 }, { sort: { "date": -1 }, skip: page * count, limit: count}, (err, competitions) => {
     if (err) next(err)
     else res.json(competitions)
   } )
@@ -67,7 +67,7 @@ router.get('/:page/:count', (req, res, next) => {
 router.get('/', (req, res, next) => {
   // 모든 대회 목록 반환
   // json array
-  Competition.find({}, (err, competitions) => {
+  Competition.find({}, { password: 0 }, {}, (err, competitions) => {
     if (err) next(err)
     else res.json(competitions)
   })
