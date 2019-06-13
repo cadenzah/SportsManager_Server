@@ -21,7 +21,7 @@ const teamSchema = new Schema({
     default: 0,
   },
   players: {
-    type: [ObjectId],
+    type: [String],
   }
 })
 

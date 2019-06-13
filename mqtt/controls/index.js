@@ -43,7 +43,13 @@ const controller = (client, deviceId, competId, eventCode, content) => {
       break
 
     case 2: // game done
-      Game.findOneAndUpdate({ device_id: deviceId }, { state: 2 }, null, (err) => {
+      Game.findOneAndUpdate({ device_id: deviceId },
+        {
+          state: 2,
+          team_A: { score: 0 },
+          team_B: { score: 0 },
+          $inc: { 'number': 1 }
+        }, null, (err) => {
         if (err) { // 업데이트에 실패하였음을 publish
           // console.log('fail-2')
           console.error(err)
