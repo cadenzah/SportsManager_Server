@@ -30,6 +30,10 @@ const gameSchema = new Schema({
     type: ObjectId,
     required: true
   },
+  device_id: {
+    type: String,
+    required: true
+  },
   court: {
     type: Number,
     // required: true,
@@ -49,8 +53,8 @@ const gameSchema = new Schema({
     default: () => ({})
   },
   state: {
-    type: String,
-    default: 'not_initialized'
+    type: Number,
+    default: 0
   },
   isLeaf: {
     type: Boolean,

@@ -173,6 +173,7 @@ Usage|Method Topic|Resource Topic|Description
 - [`POST /competition`](#post/competition)
 - [`GET /competition/:id`](#get/competition/:id)
 - [`PUT /competition/:id`](#put/competition/:id)
+- [`POST /competition/admin`](#post/competition/admin)
 - [`GET /competition/:page/:count`](#get/competition/:page/:count)
 
 <a name="get/player"></a>
@@ -501,8 +502,7 @@ URI|Method|Description
         "_id": "competition's id(`ObjectId`)",
         "name": "competition's title or name",
         "location": "where the competition is held",
-        "date": "when the competition is held(`String(YYYY-MM-DD)`)",
-        "password": "the password for this competition"
+        "date": "when the competition is held(`String(YYYY-MM-DD)`)"
       },
 
       {
@@ -539,8 +539,7 @@ URI|Method|Description
       "_id": "competition's id(`ObjectId`)",
       "name": "competition's title or name",
       "location": "where the competition is held",
-      "date": "when the competition is held(`String(YYYY-MM-DD)`)",
-      "password": "the password for this competition"
+      "date": "when the competition is held(`String(YYYY-MM-DD)`)"
     }
     ```
 
@@ -566,8 +565,7 @@ URI|Method|Description
       "_id": "competition's id(`ObjectId`)",
       "name": "competition's title or name",
       "location": "where the competition is held",
-      "date": "when the competition is held(`String(YYYY-MM-DD)`)",
-      "password": "the password for this competition"
+      "date": "when the competition is held(`String(YYYY-MM-DD)`)"
     }
     ```
 
@@ -600,6 +598,38 @@ URI|Method|Description
     }
     ```
 
+<a name="post/competition/admin"></a>
+### - Check if the password for a competition is correct (Admin mode)
+URI|Method|Description
+-|-|-
+`/competition/admin`|`POST`|Check if the password for a specific competition is correct or not.
+
+- Request Parameter :
+
+  `Not required`
+
+- Request Body :
+
+  ```JSON
+  {
+    "competId": "competition's id(`ObjectId`)",
+    "password": "password set for the competition when it is generated",
+  }
+  ```
+
+`Not required`
+
+- Response Form:
+
+```json
+  {
+    "msg": "true or false (`Boolean`)"
+  }
+```
+
+
+
+
 <a name="get/competition/:page/:count"></a>
 ### - Get a limited list of data of competitions
 
@@ -625,11 +655,10 @@ URI|Method|Description
       "name": "competition's title or name",
       "location": "where the competition is held",
       "date": "when the competition is held(`String(YYYY-MM-DD)`)",
-      "password": "the password for this competition"
-    },
+    }
 
     {
-      "4 more": "competitions can come down..."
+      "more": "competitions can come down..."
     }
   ]
   ```

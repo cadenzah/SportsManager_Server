@@ -1,4 +1,5 @@
 const mqtt = (app) => {
+  const Game = require('../schemas/game')
   const mqtt = require('mqtt')
   const mqttParse = require('mqtt-pattern')
 
@@ -16,7 +17,8 @@ const mqtt = (app) => {
       // dummy '/connect' publish code for test purpose
       client.publish('/connect', JSON.stringify({
         // deviceId (generated from the device)
-        content: '12343'
+        competitionId: '5ce7801c9cc806342dc493fa',
+        deviceId: '9876'
       }))
     })
   })
@@ -26,24 +28,62 @@ const mqtt = (app) => {
     const otherTopics = mqttParse.exec('/+method/+deviceId', topic)
 
     if (!otherTopics) {
+      console.log(connectTopics)
       // connect topic
-      const deviceId = JSON.parse(message.toString()).content
-      client.subscribe(`/event/${deviceId}`)
+      const { deviceId, competitionId } = JSON.parse(message.toString())
+      // 해당 deviceId와 competId 로 게임 만든다
+      Game.find({ competition_id: competitionId }, (err, games) => {
+        // 혹시나 서비스 상에 없는 경기인 경우
+        if(err) return console.log(err)
 
-      // dummy '/event' publish code for test purpose
-      client.publish(`/event/${deviceId}`, JSON.stringify({
-        gameId: '5ce78ccf6917da36bad81aa7',
-        eventCode: 2
-      }))
+        let court = 0;
+        games.forEach((game) => {
+          if(game.court > court) court = game.court;
+        });
+        court++;
+
+        const body = {
+          court,
+          number: 0,
+          state: 0,
+          competition_id: competitionId,
+          device_id: deviceId,
+          team_A: {
+            players: []
+          },
+          team_B: {
+            players: []
+          }
+        }
+        const newGame = new Game(body);
+        newGame.save((err) => {
+          if (err) console.error(err)
+          else {
+            client.subscribe(`/event/${deviceId}`, (err) => {
+              client.publish(`/update/${deviceId}`, JSON.stringify({
+                msg: 'game_ready',
+                eventCode: 0
+              }))
+              // ## dummy '/event' publish code for test purpose
+              client.publish(`/event/${deviceId}`, JSON.stringify({
+                competId: '5ce7801c9cc806342dc493fa',
+                eventCode: 2
+              }))
+            })
+          }
+        })
+      });
     } else if (otherTopics.method === 'event'){
+      console.log(otherTopics)
       // event topic
-      const { gameId, eventCode, content } = JSON.parse(message.toString())
-      if (eventCode !== undefined) controller(client, otherTopics.deviceId, gameId, eventCode, content)
+      const { competId, eventCode, content } = JSON.parse(message.toString())
+      // competId, deviceId, eventCode, conetent
+      if (eventCode !== undefined) controller(client, otherTopics.deviceId, competId, eventCode, content)
 
-      // dummy '/update' subscribe code for test purpose
+      // ## dummy '/update' subscribe code for test purpose
       client.subscribe(`/update/${otherTopics.deviceId}`)
     }
-    // dummy '/update' processing condition branch
+    // ## dummy '/update' processing condition branch
     else if (otherTopics.method === 'update') {
       console.log(JSON.parse(message.toString()))
     }
