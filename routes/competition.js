@@ -5,6 +5,27 @@ const moment = require('moment')
 const Competition = require('../schemas/competition')
 const router = express.Router()
 
+router.post('/admin', (req, res, next) => {
+  // admin mode
+  // password check
+  const { competId, password } = req.body
+  Competition.find({ _id: competId }, (err, competitions) => {
+    if (err) next(err)
+    else {
+      const competition = competitions[0]
+      if (competition.password === password) {
+        res.json({
+          msg: true
+        })
+      } else {
+        res.json({
+          msg: false
+        })
+      }
+    }
+  })
+})
+
 router.get('/:id', (req, res, next) => {
   // 특정 대회에 대한 정보 열람
   // json object
@@ -71,5 +92,5 @@ router.post('/', (req, res, next) => {
     else res.json({ _id: newCompet._id })
   })
 })
-new Date().get
+
 module.exports = router
